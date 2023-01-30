@@ -12,6 +12,9 @@ public class HuffmanCompressionImpl implements ICompressor{
     public void compress(String source, String destination) {
         IReadAndWrite rw=new ReadAndWriteImpl();
         byte[] b=rw.read(source);
+        //Condition for empty file
+
+
 
         byte[] huffmanByte=mainCompressionMethods(b);
 
@@ -19,6 +22,7 @@ public class HuffmanCompressionImpl implements ICompressor{
     }
 
     private byte[] mainCompressionMethods(byte[] b) {
+        if (b.length==0) return b;
 
         ICompressionUtils utils=new CompressionUtils();
 
@@ -28,8 +32,4 @@ public class HuffmanCompressionImpl implements ICompressor{
 
         return huffmanBytes;
     }
-
-
-
-
 }

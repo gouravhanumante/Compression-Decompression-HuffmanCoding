@@ -24,6 +24,14 @@ public class ReadAndWriteImpl implements IReadAndWrite{
         try {
             OutputStream oStream=new FileOutputStream(destination);
             ObjectOutputStream objectOutputStream=new ObjectOutputStream(oStream);
+            if (huffmanBytes.length==0){
+                byte []x=new byte[1];
+                x[0]=-1;
+                objectOutputStream.writeObject(x);
+                oStream.close();
+                objectOutputStream.close();
+                return;
+            }
             objectOutputStream.writeObject(huffmanBytes);
             objectOutputStream.writeObject(lookupMap);
 

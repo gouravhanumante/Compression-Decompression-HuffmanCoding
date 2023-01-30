@@ -14,12 +14,22 @@ public class HuffmanDecompressionImpl implements IDecompressor{
             FileInputStream iStream=new FileInputStream(source);
             ObjectInputStream objectInputStream=new ObjectInputStream(iStream);
 
+            OutputStream oStream=new FileOutputStream(destination);
+
             byte[] huffmanBytes= (byte[]) objectInputStream.readObject();
+
+            if (huffmanBytes.length==1 && huffmanBytes[0]==-1){
+                oStream.write(0);
+                objectInputStream.close();
+                oStream.close();
+                iStream.close();
+                return;
+            }
+
             Map<Byte,String> lookupMap= (Map<Byte, String>) objectInputStream.readObject();
 
             byte[] finalRes=getDecompressedData(huffmanBytes,lookupMap);
 
-            OutputStream oStream=new FileOutputStream(destination);
             oStream.write(finalRes);
 
             objectInputStream.close();
