@@ -1,5 +1,7 @@
 package Huffman.Compressor;
 
+import Huffman.MyDefines.Container;
+
 import java.io.*;
 import java.util.Map;
 
@@ -20,11 +22,11 @@ public class ReadAndWriteImpl implements IReadAndWrite{
     }
 
     @Override
-    public void write(String destination, byte[] huffmanBytes, Map<Byte,String> lookupMap) {
+    public void write(String destination, Container huffmanContainer, Map<Byte,String> lookupMap) {
         try {
             OutputStream oStream=new FileOutputStream(destination);
             ObjectOutputStream objectOutputStream=new ObjectOutputStream(oStream);
-            if (huffmanBytes.length==0){
+            if (huffmanContainer.getHuffmanByte().length==0){
                 byte []x=new byte[1];
                 x[0]=-1;
                 objectOutputStream.writeObject(x);
@@ -32,8 +34,9 @@ public class ReadAndWriteImpl implements IReadAndWrite{
                 objectOutputStream.close();
                 return;
             }
-            objectOutputStream.writeObject(huffmanBytes);
+            objectOutputStream.writeObject(huffmanContainer.getHuffmanByte());
             objectOutputStream.writeObject(lookupMap);
+            objectOutputStream.writeObject(huffmanContainer.getCounter());
 
             oStream.close();
             objectOutputStream.close();

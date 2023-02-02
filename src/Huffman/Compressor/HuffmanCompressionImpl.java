@@ -1,5 +1,6 @@
 package Huffman.Compressor;
 
+import Huffman.MyDefines.Container;
 import Huffman.MyDefines.Node;
 
 import java.util.HashMap;
@@ -16,20 +17,20 @@ public class HuffmanCompressionImpl implements ICompressor{
 
 
 
-        byte[] huffmanByte=mainCompressionMethods(b);
+        Container huffmanByte=mainCompressionMethods(b);
 
         rw.write(destination,huffmanByte,lookupMap);
     }
 
-    private byte[] mainCompressionMethods(byte[] b) {
-        if (b.length==0) return b;
+    private Container mainCompressionMethods(byte[] b) {
+        if (b.length==0) return new Container(b,(byte)0);
 
         ICompressionUtils utils=new CompressionUtils();
 
         Node root=utils.createHuffmanTree(b);
         utils.buildLookupRecursive(root,"",lookupMap);
-        byte[] huffmanBytes=utils.createCompressedArray(b,lookupMap);
+        Container huffmanBytesContainer=utils.createCompressedArray(b,lookupMap);
 
-        return huffmanBytes;
+        return huffmanBytesContainer;
     }
 }

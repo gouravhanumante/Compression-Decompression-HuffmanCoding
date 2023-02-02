@@ -1,5 +1,6 @@
 package Huffman.Compressor;
 
+import Huffman.MyDefines.Container;
 import Huffman.MyDefines.MinPriorityQueue;
 import Huffman.MyDefines.Node;
 
@@ -57,24 +58,31 @@ public class CompressionUtils implements ICompressionUtils{
     }
 
     @Override
-    public byte[] createCompressedArray(byte[] fileData, Map<Byte, String> lookupMap) {
+    public Container createCompressedArray(byte[] fileData, Map<Byte, String> lookupMap) {
 
         StringBuilder sb = new StringBuilder();
+
         for (byte b : fileData){
                 sb.append(lookupMap.get(b));
         }
 
         int length=(sb.length()+7)/8;
         byte[] huffCodeBytes = new byte[length];
+
+        int counter=0;
         int idx = 0;
         for (int i = 0; i < sb.length(); i += 8) {
             String s;
-            if (i + 8 > sb.length())
+            if (i + 8 > sb.length()){
+
                 s = sb.substring(i);
+                counter=s.length();
+            }
+
             else s = sb.substring(i, i + 8);
             huffCodeBytes[idx] = (byte) Integer.parseInt(s , 2);
             idx++;
         }
-        return huffCodeBytes;
+        return new Container(huffCodeBytes, (byte) counter);
     }
 }
